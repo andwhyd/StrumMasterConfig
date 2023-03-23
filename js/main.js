@@ -102,6 +102,7 @@ connectButton.addEventListener("click", () => {
                 connectButton.className = "btn btn-outline-danger btn-lg me-2";
                 terminal.send("Connecting");
                 settingsButton.removeAttribute("disabled");
+                applyButton.removeAttribute("disabled");
             });
     } else if (connectButton.textContent === "Disconnect") {
         terminal.disconnect();
