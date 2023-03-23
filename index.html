@@ -29,11 +29,10 @@
                             Apply
                         </button>
                         <button type="button" class="btn btn-outline-light btn-lg dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
-                            id="dropdownButton" disabled>
+                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                             <span class="visually-hidden">More Options</span>
                         </button>
-                        <div class="dropdown-menu" id="navbarDropdownMenu">
+                        <div class="dropdown-menu">
                             <form class="px-3 py-2" id="savePresetForm">
                                 <div class="mb-2">
                                     <input type="text" class="form-control" id="dropdownSaveInput"
@@ -43,17 +42,19 @@
                             </form>
                             <div class="dropdown-divider"></div>
                             <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#presetModal">Load/Manage Presets</button></li>
-                            <li>
+                                    data-bs-target="#presetModal" id="managePresetsButton">Load/Manage Presets</button>
+                            </li>
+                            <li><button class="dropdown-item" type="button" id="devButton">
+                                    DEV TOOL: Clear Local Storage</button></li>
                         </div>
                     </div>
                     <button type="button" class="btn btn-outline-light btn-lg me-2" data-bs-toggle="modal"
-                        data-bs-target="#settingModal" id="settingsButton" disabled>
+                        data-bs-target="#settingModal" id="settingsButton" disabled hidden>
                         Settings
                     </button>
                     <button type="button" class="btn btn-outline-primary btn-lg me-2" data-bs-toggle="modal"
                         data-bs-target="#tutorialModal">
-                        Launch Tutorial
+                        Tutorial
                     </button>
                 </ul>
                 <div class="badge bg-warning text-wrap" role="alert" id="statusAlert">
@@ -65,11 +66,13 @@
     </nav>
 
     <!-- Alert -->
-    <div class="container px-5">
-        <div class="alert alert-warning alert-dismissible" role="alert">
+    <div class="container px-5 pt-5">
+        <div class="alert alert-warning alert-dismissible" role="alert" id="firstAlert" hidden>
             <div>This configurator uses web bluetooth, IOS devices may not be supported and Chrome is recommended.</div>
             <div>Cookies are used by this configurator to store presets, clearing them will delete all presets!</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div>Presets are stored by device, presets can be downloaded and transfered using the preset manager.</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                id="alertCloseButton"></button>
         </div>
     </div>
 
@@ -141,25 +144,45 @@
     <!-- Modals -->
     <div class="modal fade modal-xl" id="tutorialModal" tabindex="-1" aria-labelledby="tutorialModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="tutorialModal">Tutorial</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="container">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled"><button type="button" class="page-link">&laquo;</li>
-                            <li class="page-item active"><button type="button" class="page-link">1</button></li>
-                            <li class="page-item"><button type="button" class="page-link">2</button></li>
-                            <li class="page-item"><button type="button" class="page-link">3</button></li>
-                            <li class="page-item"><button type="button" class="page-link">4</button></li>
-                            <li class="page-item"><button type="button" class="page-link">&raquo;</button></li>
-                        </ul>
+                    <div class="tab-content py-5 px-5" id="tutorailTabContect">
+                        <div class="tab-pane fade show active" id="tutorial1" role="tabpanel" tabindex="0">
+                            <img src="assets/tutorial/temp.png" class="rounded img-fluid" alt="...">Step 1
+                        </div>
+                        <div class="tab-pane fade" id="tutorial2" role="tabpanel" tabindex="0">
+                            <img src="assets/tutorial/temp.png" class="rounded img-fluid" alt="...">Step 2
+                        </div>
+                        <div class="tab-pane fade" id="tutorial3" role="tabpanel" tabindex="0">
+                            <img src="assets/tutorial/temp.png" class="rounded img-fluid" alt="...">Step 3
+                        </div>
+                        <div class="tab-pane fade" id="tutorial4" role="tabpanel" tabindex="0">
+                            <img src="assets/tutorial/temp.png" class="rounded img-fluid" alt="...">Step 4
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer justify-content-between">
+                    <div></div>
+                    <ul class="pagination" role="tablist" id="tutorialNavTabs">
+                        <li class="page-item prev" id="tutorialPrevButton"><button type="button"
+                                class="page-link">&laquo;</li>
+                        <li class="page-item"><button class="page-link active" id="tutorial1-tab" data-bs-toggle="pill"
+                                data-bs-target="#tutorial1" type="button" role="tab">1</button></li>
+                        <li class="page-item"><button class="page-link" id="tutorial2-tab" data-bs-toggle="pill"
+                                data-bs-target="#tutorial2" type="button" role="tab">2</button></li>
+                        <li class="page-item"><button class="page-link" id="tutorial3-tab" data-bs-toggle="pill"
+                                data-bs-target="#tutorial3" type="button" role="tab">3</button></li>
+                        <li class="page-item"><button class="page-link" id="tutorial4-tab" data-bs-toggle="pill"
+                                data-bs-target="#tutorial4" type="button" role="tab">4</button>
+                        </li>
+                        <li class="page-item next" id="tutorialNextButton"><button type="button"
+                                class="page-link">&raquo;</button></li>
+                    </ul>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -174,11 +197,21 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <ul class="list-group" id="presetListGroup">
+                        <li class="list-group-item d-flex justify-content-between" id="presetToClone">
+                            <div>
+                                <input class="form-check-input me-1" type="radio" name="presetGroupRadio"
+                                    id="presetRadio0" checked>
+                                <label class="form-check-label stretched-link" for="presetRadio0">Simple Pick
+                                    (Example)</label>
+                            </div>
+                            <div class="preset-config">{"buttonNum":6,"buttonConfig":[1,2,4,8,16,32]}</div>
+                        </li>
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <div class="btn-group me-2">
-                        <button class="btn btn-primary" type="button">
+                        <button class="btn btn-primary" type="button" id="loadPresetButton" data-bs-dismiss="modal">
                             Load Selected Preset
                         </button>
                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
@@ -186,21 +219,25 @@
                             <span class="visually-hidden">More Options</span>
                         </button>
                         <div class="dropdown-menu">
-                            <li><button class="dropdown-item text-danger" type="button">Delete Selected Preset</button>
-                            </li>
+                            <li><button class="dropdown-item text-danger" type="button" id="deletePresetsButton">
+                                    Delete Selected Preset</button></li>
                             <li>
                                 <div class="dropdown-divider"></div>
                             <li>
-                            <li><button class="dropdown-item" type="button">Upload Presets From File</button></li>
-                            <li><button class="dropdown-item" type="button">Download Presets As File</button></li>
+                            <li><button class="dropdown-item" type="button" id="ulPresetsButton">
+                                    Upload Presets From File</button></li>
+                            <li><button class="dropdown-item" type="button" id="dlPresetsButton">
+                                    Download Presets As File</button></li>
                         </div>
                     </div>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
+                <a id="dlAnchorElem" style="display:none"></a>
+                <input id="ulAnchorElem" type="file" accept=".json" style="display:none">
             </div>
         </div>
     </div>
-    <div class="modal fade" id="settingModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
+    <div class=" modal fade" id="settingModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
