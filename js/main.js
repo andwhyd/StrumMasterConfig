@@ -5,19 +5,22 @@
 const deviceName = document.getElementById("deviceName");
 const statusAlert = document.getElementById("statusAlert");
 const connectButton = document.getElementById("connectButton");
-const settingsButton = document.getElementById("settingsButton");
 const applyButton = document.getElementById("applyButton");
+const settingsButton = document.getElementById("settingsButton")
 // Preset elements
 const savePresetForm = document.getElementById("savePresetForm");
 const managePresetsButton = document.getElementById("managePresetsButton");
 const presetListGroup = document.getElementById("presetListGroup");
 const presetToClone = document.getElementById("presetToClone");
-const loadPresetButton = document.getElementById("loadPresetButton")
-const deletePresetsButton = document.getElementById("deletePresetsButton")
-const dlPresetsButton = document.getElementById("dlPresetsButton")
-const dlAnchorElem = document.getElementById('dlAnchorElem');
-const ulPresetsButton = document.getElementById("ulPresetsButton")
-const ulAnchorElem = document.getElementById('ulAnchorElem');
+const loadPresetButton = document.getElementById("loadPresetButton");
+const deletePresetsButton = document.getElementById("deletePresetsButton");
+const dlPresetsButton = document.getElementById("dlPresetsButton");
+const dlAnchorElem = document.getElementById("dlAnchorElem");
+const ulPresetsButton = document.getElementById("ulPresetsButton");
+const ulAnchorElem = document.getElementById("ulAnchorElem");
+// Setting elements
+const buttonNumSlider = document.getElementById("buttonNumSlider");
+const saveSettingsButton = document.getElementById("saveSettingsButton");
 // Alert elements
 const firstAlert = document.getElementById("firstAlert");
 const alertCloseButton = document.getElementById("alertCloseButton");
@@ -101,7 +104,6 @@ connectButton.addEventListener("click", () => {
                 connectButton.textContent = "Disconnect"
                 connectButton.className = "btn btn-outline-danger btn-lg me-2";
                 terminal.send("Connecting");
-                settingsButton.removeAttribute("disabled");
                 applyButton.removeAttribute("disabled");
             });
     } else if (connectButton.textContent === "Disconnect") {
@@ -110,7 +112,6 @@ connectButton.addEventListener("click", () => {
         statusAlert.setAttribute("class", "badge bg-warning text-wrap");
         connectButton.textContent = "Connect"
         connectButton.className = "btn btn-outline-success btn-lg me-2";
-        settingsButton.setAttribute("disabled", "");
         applyButton.setAttribute("disabled", "");
     }
 });
@@ -121,6 +122,7 @@ function readCurrentConfig() {
     let action;
     let checkButtons;
     let stringBool;
+    currentConfigJson.buttonConfig = [];
     for (j = 0; j < currentConfigJson.buttonNum; j++) {
         let configInt = 0;
         configs = cardHolder.children[j].children[0].children[1];
@@ -259,6 +261,17 @@ ulAnchorElem.addEventListener("change", (event) => {
         drawPresets();
     };
     reader.readAsBinaryString(event.target.files[0]);
+});
+
+// Settings viewer
+settingsButton.addEventListener("click", () => {
+    buttonNumSlider.value = currentConfigJson.buttonNum;
+    buttonNumSlider.previousElementSibling.value = buttonNumSlider.value;
+});
+// Save settings
+saveSettingsButton.addEventListener("click", () => {
+    currentConfigJson.buttonNum = buttonNumSlider.value;
+    drawInputCards();
 });
 
 // Tutorial tab navigation

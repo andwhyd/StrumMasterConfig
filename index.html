@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <button type="button" class="btn btn-outline-light btn-lg me-2" data-bs-toggle="modal"
-                        data-bs-target="#settingModal" id="settingsButton" disabled hidden>
+                        data-bs-target="#settingModal" id="settingsButton">
                         Settings
                     </button>
                     <button type="button" class="btn btn-outline-primary btn-lg me-2" data-bs-toggle="modal"
@@ -245,10 +245,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <label for="buttonNumSlider" class="form-label">Number of inputs:</label>
+                    <output>6</output>
+                    <input type="range" class="form-range" min="1" max="12" id="buttonNumSlider" oninput="this.previousElementSibling.value = this.value">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="saveSettingsButton">Save changes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
