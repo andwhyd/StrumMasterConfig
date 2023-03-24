@@ -260,7 +260,6 @@ ulAnchorElem.addEventListener("change", (event) => {
     let reader = new FileReader();
     reader.onload = function (e) {
         let tempPresets = JSON.parse(e.target.result);
-        console.log(tempPresets);
         for (j = 0; j < tempPresets.length; j++) {
             addPresetToSaved(tempPresets[j].name, JSON.parse(tempPresets[j].preset));
         }
