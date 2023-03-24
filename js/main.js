@@ -171,13 +171,9 @@ applyButton.addEventListener("click", () => {
     });
 });
 
-// Save config function
-savePresetForm.addEventListener("submit", (event) => {
-    let alreadNamed = false
-    event.preventDefault();
-    presetName = event.target[0].value;
+function addPresetToSaved(presetName, configJson) {
+    let alreadyNamed = false
     savedPresets = JSON.parse(localStorage.getItem("savedPresets"));
-    readCurrentConfig();
     if (savedPresets === null) {
         savedPresets = [];
     }
@@ -185,19 +181,26 @@ savePresetForm.addEventListener("submit", (event) => {
         if (savedPresets[j].name === presetName) {
             savedPresets[j] = {
                 "name": presetName,
-                "preset": JSON.stringify(currentConfigJson),
+                "preset": JSON.stringify(configJson),
             }
-            alreadNamed = true;
+            alreadyNamed = true;
             break;
         }
     }
-    if (alreadNamed == false) {
+    if (alreadyNamed == false) {
         savedPresets.push({
             "name": presetName,
-            "preset": JSON.stringify(currentConfigJson),
+            "preset": JSON.stringify(configJson),
         });
     }
     localStorage.setItem("savedPresets", JSON.stringify(savedPresets));
+}
+// Save config function
+savePresetForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    presetName = event.target[0].value;
+    readCurrentConfig();
+    addPresetToSaved(presetName, currentConfigJson);
 });
 
 // View presets function
@@ -256,7 +259,11 @@ ulPresetsButton.addEventListener("click", () => {
 ulAnchorElem.addEventListener("change", (event) => {
     let reader = new FileReader();
     reader.onload = function (e) {
-        savedPresets = JSON.parse(e.target.result);
+        let tempPresets = JSON.parse(e.target.result);
+        console.log(tempPresets);
+        for (j = 0; j < tempPresets.length; j++) {
+            addPresetToSaved(tempPresets[j].name, JSON.parse(tempPresets[j].preset));
+        }
         localStorage.setItem("savedPresets", JSON.stringify(savedPresets));
         drawPresets();
     };
