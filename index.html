@@ -22,45 +22,53 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <button class="btn btn-outline-success btn-lg me-2" type="button"
-                        id="connectButton">Connect</button>
-                    <div class="btn-group me-2">
-                        <button class="btn btn-outline-light btn-lg" type="button" id="applyButton" disabled>
-                            Apply
-                        </button>
-                        <button type="button" class="btn btn-outline-light btn-lg dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                            <span class="visually-hidden">More Options</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <form class="px-3 py-2" id="savePresetForm">
-                                <div class="mb-2">
-                                    <input type="text" class="form-control" id="dropdownSaveInput"
-                                        placeholder="Preset Name" required>
-                                </div>
-                                <button type="submit" class="btn btn-outline-primary btn-sm">Save As Preset</button>
-                            </form>
-                            <div class="dropdown-divider"></div>
-                            <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                    <li class="nav-item">
+                        <button class="btn btn-outline-success btn-lg me-2" type="button"
+                            id="connectButton">Connect</button>
+                    </li>
+                    <li class="nav-item">
+                        <div class="btn-group me-2">
+                            <button class="btn btn-outline-light btn-lg" type="button" id="applyButton" disabled>
+                                Apply
+                            </button>
+                            <button type="button"
+                                class="btn btn-outline-light btn-lg dropdown-toggle dropdown-toggle-split"
+                                data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <span class="visually-hidden">More Options</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <form class="px-3 py-2" id="savePresetForm">
+                                    <div class="mb-2">
+                                        <input type="text" class="form-control" id="dropdownSaveInput"
+                                            placeholder="Preset Name" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">Save As Preset</button>
+                                </form>
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#presetModal" id="managePresetsButton">Load/Manage Presets</button>
-                            </li>
-                            <li><button class="dropdown-item" type="button" id="devButton">
-                                    DEV TOOL: Clear Local Storage</button></li>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-light btn-lg me-2" data-bs-toggle="modal"
-                        data-bs-target="#settingModal" id="settingsButton">
-                        Settings
-                    </button>
-                    <button type="button" class="btn btn-outline-primary btn-lg me-2" data-bs-toggle="modal"
-                        data-bs-target="#tutorialModal">
-                        Tutorial
-                    </button>
+                                <button class="dropdown-item" type="button" id="devButton">
+                                    DEV TOOL: Clear Local Storage</button>
+                            </div>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-outline-light btn-lg me-2" data-bs-toggle="modal"
+                            data-bs-target="#settingModal" id="settingsButton">
+                            Settings
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-outline-primary btn-lg me-2" data-bs-toggle="modal"
+                            data-bs-target="#tutorialModal">
+                            Tutorial
+                        </button>
+                    </li>
                 </ul>
-                <div class="badge bg-warning text-wrap" role="alert" id="statusAlert">
+                <button type="button" class="btn btn-warning btn-lg me-2" style="pointer-events: none;"
+                    id="statusAlert">
                     <h4><span class="align-middle">Device: </span><span class="align-middle"
-                            id="deviceName">Unconnected</span></h4>
-                </div>
+                        id="deviceName">Unconnected</span></h4>
+                </button>
             </div>
         </div>
     </nav>
@@ -79,7 +87,7 @@
     <!-- Input Cards -->
     <div class="container px-1 py-5">
         <div class="row" id="cardHolder">
-            <div class="col-2" id="cardToClone">
+            <div class="col-lg-2 col-md-6 col-sm-12" id="cardToClone">
                 <div class="card border-light mb-3">
                     <div class="card-header">
                         <h4>Input 1</h4>
@@ -247,7 +255,8 @@
                 <div class="modal-body">
                     <label for="buttonNumSlider" class="form-label">Number of inputs:</label>
                     <output>6</output>
-                    <input type="range" class="form-range" min="1" max="12" id="buttonNumSlider" oninput="this.previousElementSibling.value = this.value">
+                    <input type="range" class="form-range" min="1" max="12" id="buttonNumSlider"
+                        oninput="this.previousElementSibling.value = this.value">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="saveSettingsButton">Save changes</button>

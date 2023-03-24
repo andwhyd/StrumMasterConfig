@@ -100,7 +100,7 @@ connectButton.addEventListener("click", () => {
             then(() => {
                 deviceName.textContent = terminal.getDeviceName() ?
                     terminal.getDeviceName() : defaultDeviceName;
-                statusAlert.className = "badge bg-success text-wrap";
+                statusAlert.className = "btn btn-success btn-lg me-2";
                 connectButton.textContent = "Disconnect"
                 connectButton.className = "btn btn-outline-danger btn-lg me-2";
                 terminal.send("Connecting");
@@ -109,7 +109,7 @@ connectButton.addEventListener("click", () => {
     } else if (connectButton.textContent === "Disconnect") {
         terminal.disconnect();
         deviceName.textContent = "Unconnected"
-        statusAlert.setAttribute("class", "badge bg-warning text-wrap");
+        statusAlert.className = "btn btn-warning btn-lg me-2";
         connectButton.textContent = "Connect"
         connectButton.className = "btn btn-outline-success btn-lg me-2";
         applyButton.setAttribute("disabled", "");
