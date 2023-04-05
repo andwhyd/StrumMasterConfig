@@ -34,7 +34,7 @@
 <style>
     input {
         padding: 0.2rem 0.5rem;
-        margin-bottom: 0.5rem;
+        margin: 0rem 1rem 0.5rem;
     }
     button {
         font-size: large;

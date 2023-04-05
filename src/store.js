@@ -13,7 +13,13 @@ export const strings = [
     "B",
     "E L",
 ];
-export const modes = { configuring: "MODE:01", standard: "MODE:02", error: "MODE:99" };
+export const modes = {
+    configuring: { id: 1, command: "MODE:01" },
+    standard: { id: 2, command: "MODE:02" },
+    serial: { id: 3, command: "MODE:03" },
+    live: { id: 4, command: "MODE:04" },
+    error: { id: 99, command: "MODE:99" }
+};
 
 const updateButtonNum = (config, num) => {
     config.buttonNum = num;

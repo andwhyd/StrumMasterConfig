@@ -30,9 +30,9 @@
     }
   };
   const applyConfig = () => {
-    terminal.send(modes.configuring).then(() => {
+    terminal.send(modes.configuring.command).then(() => {
       terminal.send(JSON.stringify($currentConfig)).then(() => {
-        terminal.send(modes.standard);
+        terminal.send(modes.standard.command);
       });
     });
   };
