@@ -24,12 +24,13 @@
       connected = false;
       deviceName = "Unconnected";
     } else {
-      StrumMaster.connect();
-      deviceName = StrumMaster.getDeviceName()
-        ? StrumMaster.getDeviceName()
-        : StrumMaster.defaultDeviceName;
-      StrumMaster.send("CONNECTING");
-      connected = true;
+      StrumMaster.connect().then(() => {
+        deviceName = StrumMaster.getDeviceName()
+          ? StrumMaster.getDeviceName()
+          : StrumMaster.defaultDeviceName;
+        StrumMaster.send("CONNECTING");
+        connected = true;
+      });
     }
   };
   const applyConfig = async () => {
