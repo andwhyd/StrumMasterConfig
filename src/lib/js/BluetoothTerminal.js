@@ -17,7 +17,7 @@ export default class BluetoothTerminal {
     this._maxCharacteristicValueLength = 20; // Max characteristic value length.
     this._device = null; // Device object cache.
     this._characteristic = null; // Characteristic object cache.
-    this.defaultDeviceName = "Terminal";
+    this.defaultDeviceName = "StrumMaster";
 
     // Bound functions used to add and remove appropriate event handlers.
     this._boundHandleDisconnection = this._handleDisconnection.bind(this);

@@ -2,39 +2,40 @@
   // Header
   import Header from "./lib/header/Header.svelte";
 
-  // Bluetooth Stuff
-  import BluetoothTerminal from "./lib/bluetooth_terminal";
+  // Modes
   import { modes } from "./store.js";
-  const terminal = new BluetoothTerminal();
+  import { selMode } from "./store.js";
+
+  // Bluetooth Stuff
+  import BluetoothTerminal from "./lib/js/BluetoothTerminal";
+  const StrumMaster = new BluetoothTerminal();
   let connected = false;
   let deviceName = "Unconnected";
-  terminal.receive = function (data) {
-    logToTerminal(data, "in");
+  StrumMaster.receive = function (data) {
+    console.log(data);
   };
-  const logToTerminal = (message, type = "") => {
-    console.log(message);
+  $: $selMode, setMode();
+  const setMode = async () => {
+    StrumMaster.send($selMode.command);
   };
-  const connectBluetooth = () => {
+  const connectBluetooth = async () => {
     if (connected) {
-      terminal.disconnect();
+      StrumMaster.disconnect();
       connected = false;
       deviceName = "Unconnected";
     } else {
-      terminal.connect().then(() => {
-        deviceName = terminal.getDeviceName()
-          ? terminal.getDeviceName()
-          : terminal.defaultDeviceName;
-        terminal.send("CONNECTING");
-        connected = true;
-      });
+      StrumMaster.connect();
+      deviceName = StrumMaster.getDeviceName()
+        ? StrumMaster.getDeviceName()
+        : StrumMaster.defaultDeviceName;
+      StrumMaster.send("CONNECTING");
+      connected = true;
     }
   };
-  const applyConfig = () => {
-    terminal.send(modes.configuring.command).then(() => {
-      terminal.send(JSON.stringify($currentConfig)).then(() => {
-        terminal.send(modes.standard.command);
-      });
-    });
+  const applyConfig = async () => {
+    StrumMaster.send(modes.configuring.command);
+    StrumMaster.send(JSON.stringify($currentConfig));
+    StrumMaster.send($selMode.command);
   };
 
   // Intial alert
