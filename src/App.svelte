@@ -16,9 +16,11 @@
   };
   $: $selMode, setMode();
   const setMode = async () => {
-    StrumMaster.send($selMode.command);
+    if (connected) {
+      StrumMaster.send($selMode.command);
+    }
   };
-  const connectBluetooth = async () => {
+  const connectBluetooth = () => {
     if (connected) {
       StrumMaster.disconnect();
       connected = false;
@@ -28,15 +30,19 @@
         deviceName = StrumMaster.getDeviceName()
           ? StrumMaster.getDeviceName()
           : StrumMaster.defaultDeviceName;
-        StrumMaster.send("CONNECTING");
-        connected = true;
+        StrumMaster.send("CONNECTING").then(() => {
+          setMode();
+          connected = true;
+        });
       });
-    }
+    } 
   };
-  const applyConfig = async () => {
-    StrumMaster.send(modes.configuring.command);
-    StrumMaster.send(JSON.stringify($currentConfig));
-    StrumMaster.send($selMode.command);
+  const applyConfig = () => {
+    StrumMaster.send(modes.configuring.command).then(() => {
+      StrumMaster.send(JSON.stringify($currentConfig)).then(() => {
+        setMode();
+      });
+    });
   };
 
   // Intial alert
