@@ -15,8 +15,8 @@ export default class BluetoothTerminal {
     // Used private variables.
     this._receiveBuffer = ''; // Buffer containing not separated data.
     this._maxCharacteristicValueLength = 20; // Max characteristic value length.
-    this._device = null; // Device object cache.
     this._characteristic = null; // Characteristic object cache.
+    this.device = null; // Device object cache.
     this.defaultDeviceName = "StrumMaster";
 
     // Bound functions used to add and remove appropriate event handlers.
@@ -106,14 +106,14 @@ export default class BluetoothTerminal {
    *                   be started or rejected if something went wrong
    */
   connect() {
-    return this._connectToDevice(this._device);
+    return this._connectToDevice(this.device);
   }
 
   /**
    * Disconnect from the connected device.
    */
   disconnect() {
-    this._disconnectFromDevice(this._device);
+    this._disconnectFromDevice(this.device);
 
     if (this._characteristic) {
       this._characteristic.removeEventListener('characteristicvaluechanged',
@@ -121,7 +121,7 @@ export default class BluetoothTerminal {
       this._characteristic = null;
     }
 
-    this._device = null;
+    this.device = null;
   }
 
   /**
@@ -186,11 +186,11 @@ export default class BluetoothTerminal {
    * @return {string} Device name or empty string if not connected
    */
   getDeviceName() {
-    if (!this._device) {
+    if (!this.device) {
       return '';
     }
 
-    return this._device.name;
+    return this.device.name;
   }
 
   /**
@@ -249,11 +249,11 @@ export default class BluetoothTerminal {
       then((device) => {
         this._log('"' + device.name + '" bluetooth device selected');
 
-        this._device = device; // Remember device.
-        this._device.addEventListener('gattserverdisconnected',
+        this.device = device; // Remember device.
+        this.device.addEventListener('gattserverdisconnected',
           this._boundHandleDisconnection);
 
-        return this._device;
+        return this.device;
       });
   }
 
@@ -336,11 +336,13 @@ export default class BluetoothTerminal {
     const device = event.target;
 
     this._log('"' + device.name +
-      '" bluetooth device disconnected, trying to reconnect...');
+      '" bluetooth device disconnected.');
 
-    this._connectDeviceAndCacheCharacteristic(device).
-      then((characteristic) => this._startNotifications(characteristic)).
-      catch((error) => this._log(error));
+    this.disconnect();
+
+    // this._connectDeviceAndCacheCharacteristic(device).
+    //   then((characteristic) => this._startNotifications(characteristic)).
+    //   catch((error) => this._log(error));
   }
 
   /**

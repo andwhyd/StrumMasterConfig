@@ -11,6 +11,9 @@
   const StrumMaster = new BluetoothTerminal();
   let connected = false;
   let deviceName = "Unconnected";
+  $: if (StrumMaster.device === null) {
+    connected = false;
+  }
   StrumMaster.receive = function (data) {
     console.log(data);
   };
@@ -26,15 +29,17 @@
       connected = false;
       deviceName = "Unconnected";
     } else {
-      StrumMaster.connect().then(() => {
-        deviceName = StrumMaster.getDeviceName()
-          ? StrumMaster.getDeviceName()
-          : StrumMaster.defaultDeviceName;
-        StrumMaster.send("CONNECTING").then(() => {
-          setMode();
-          connected = true;
-        });
-      });
+      StrumMaster.connect()
+        .then(() => {
+          deviceName = StrumMaster.getDeviceName()
+            ? StrumMaster.getDeviceName()
+            : StrumMaster.defaultDeviceName;
+          StrumMaster.send("CONNECTING").then(() => {
+            setMode();
+            connected = true;
+          });
+        })
+        .catch((error) => console.log(error));
     }
   };
   const applyConfig = () => {
