@@ -6,8 +6,10 @@
     import { currentConfig } from "../../store";
     let saveName = "";
     const savePreset = () => {
-        savedPresets.addPreset(saveName, $currentConfig);
-        saveName = "";
+        if (saveName !== "") {
+            savedPresets.addPreset(saveName, $currentConfig);
+            saveName = "";
+        }
     };
 </script>
 
