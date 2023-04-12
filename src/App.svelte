@@ -12,9 +12,13 @@
   let connected = false;
   let deviceName = "Unconnected";
   let lastRecieved = "";
-  $: if (StrumMaster.device === null) {
-    connected = false;
-  }
+  const checkConnection = () => {
+    if (StrumMaster.device === null) {
+      connected = false;
+      deviceName = "Unconnected";
+    }
+  };
+  const checkConnectionInt = setInterval(checkConnection, 1000);
   StrumMaster.receive = (data) => {
     lastRecieved = data;
     console.log(data);
@@ -47,14 +51,14 @@
       connected = false;
       deviceName = "Unconnected";
     } else {
-      await StrumMaster.connect()
+      StrumMaster.connect()
         .then(async () => {
           deviceName = StrumMaster.getDeviceName()
             ? StrumMaster.getDeviceName()
             : StrumMaster.defaultDeviceName;
           await StrumMaster.send("CONNECTING");
-          await setMode();
           connected = true;
+          await setMode();
         })
         .catch((error) => console.log(error));
     }
@@ -124,7 +128,7 @@
         <InputCard idx={j} on:livePlay={livePlay} />
       </div>
     {/each}
-  </div>
+  </div>  
 </main>
 
 <Settings bind:showSettings />
