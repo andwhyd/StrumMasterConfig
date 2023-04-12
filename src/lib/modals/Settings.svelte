@@ -13,13 +13,13 @@
     // Mode setting
     import { modes } from "../../store";
     import { selMode } from "../../store";
-    let selectMode = modes.configuring;
+    let selectMode = $selMode.id;
 
     // Update all settings
     const updateSettings = () => {
         currentConfig.updateButtonNum(buttonNum);
-        if (selectMode !== $selMode) {
-            $selMode = selectMode;
+        if (selectMode != $selMode.id) {
+            $selMode = modes[Object.keys(modes)[selectMode]];
         }
     };
 </script>
@@ -39,7 +39,7 @@
                 <select bind:value={selectMode}>
                     {#each Object.keys(modes) as mode}
                         {#if !modes[mode].hidden}
-                            <option value={modes[mode]}>
+                            <option value={modes[mode].id}>
                                 {mode}
                             </option>
                         {/if}

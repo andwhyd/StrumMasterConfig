@@ -14,10 +14,10 @@ export const strings = [
     "E L",
 ];
 export const modes = {
-    configuring: { id: 1, command: "MODE:01", hidden: true },
-    standard: { id: 2, command: "MODE:02", hidden: false },
-    serial: { id: 3, command: "MODE:03", hidden: false },
-    live: { id: 4, command: "MODE:04", hidden: false },
+    configuring: { id: 0, command: "MODE:01", hidden: true },
+    standard: { id: 1, command: "MODE:02", hidden: false },
+    serial: { id: 2, command: "MODE:03", hidden: false },
+    live: { id: 3, command: "MODE:04", hidden: false },
     error: { id: 99, command: "MODE:99", hidden: true },
 };
 export const selMode = writable(modes.standard);

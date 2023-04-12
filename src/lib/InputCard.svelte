@@ -1,10 +1,18 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
     import { onMount } from "svelte";
     import { fade } from "svelte/transition";
-    import { currentConfig } from "../store.js";
+    import { slide } from "svelte/transition";
 
+    // Configs
+    import { currentConfig } from "../store.js";
     import { pickActions } from "../store.js";
     import { strings } from "../store.js";
+
+    // Modes
+    import { modes } from "../store.js";
+    import { selMode } from "../store.js";
 
     export let idx = 0;
 
@@ -39,9 +47,9 @@
     };
 </script>
 
-<div class="input-card" transition:fade={{ duration: 100 }}>
+<div class="input_card" transition:fade={{ duration: 100 }}>
     <div>
-        <h4 class="card-header">Input {idx + 1}</h4>
+        <h4 class="card_header">Input {idx + 1}</h4>
     </div>
     <div>
         <select bind:value={selAction} on:change={update_config}>
@@ -64,23 +72,34 @@
             </div>
         {/each}
     </div>
+    {#if $selMode == modes.live}
+        <div class="live_control" transition:slide>
+            <button on:click={() => dispatch("livePlay", { id: idx })}>
+                Play
+            </button>
+        </div>
+    {/if}
 </div>
 
 <style>
-    .input-card {
+    .input_card {
         border-radius: 0.8rem;
         padding: 1rem 2rem;
         border: solid darkgoldenrod;
         margin: 0.5rem;
         text-align: left;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         transition: 0.3s;
     }
-    .input-card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    .input_card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
-    .card-header {
+    .card_header {
         text-align: center;
         margin: 0 0 1rem;
+    }
+    .live_control {
+        margin: 1rem 0rem 0.5rem;
+        text-align: center;
     }
 </style>

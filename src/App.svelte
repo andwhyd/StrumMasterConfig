@@ -35,7 +35,7 @@
           connected = true;
         });
       });
-    } 
+    }
   };
   const applyConfig = () => {
     StrumMaster.send(modes.configuring.command).then(() => {
@@ -43,6 +43,14 @@
         setMode();
       });
     });
+  };
+
+  // Live play
+  const livePlay = async (event) => {
+    console.log("LIVE:" + event.detail.id.toString().padStart(2, "0"));
+    if (connected) {
+      StrumMaster.send("LIVE:" + event.detail.id.toString().padStart(2, "0"));
+    }
   };
 
   // Intial alert
@@ -66,7 +74,7 @@
   import Presets from "./lib/modals/Presets.svelte";
   let showPresets = false;
 
-  // Curernt Config
+  // Current Config
   import { currentConfig } from "./store.js";
 </script>
 
@@ -91,7 +99,7 @@
   <div class="input_card_holder" transition:slide={anim_options}>
     {#each { length: $currentConfig.buttonNum } as _, j (j)}
       <div animate:flip={{ duration: anim_options.delay }}>
-        <InputCard idx={j} />
+        <InputCard idx={j} on:livePlay={livePlay} />
       </div>
     {/each}
   </div>
