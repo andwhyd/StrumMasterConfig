@@ -11,50 +11,67 @@
   const StrumMaster = new BluetoothTerminal();
   let connected = false;
   let deviceName = "Unconnected";
+  let lastRecieved = "";
   $: if (StrumMaster.device === null) {
     connected = false;
   }
-  StrumMaster.receive = function (data) {
+  StrumMaster.receive = (data) => {
+    lastRecieved = data;
     console.log(data);
+  };
+  const checkInterval = 100; //ms
+  const timeOut = 500; //ms
+  const waitForMessage = (message, totalTime) => {
+    if (lastRecieved === message) {
+      return true;
+    } else if (totalTime > timeOut) {
+      return false;
+    } else {
+      setTimeout(
+        waitForMessage,
+        checkInterval,
+        message,
+        (totalTime += checkInterval)
+      );
+    }
   };
   $: $selMode, setMode();
   const setMode = async () => {
     if (connected) {
-      StrumMaster.send($selMode.command);
+      await StrumMaster.send($selMode.command);
     }
   };
-  const connectBluetooth = () => {
+  const connectBluetooth = async () => {
     if (connected) {
       StrumMaster.disconnect();
       connected = false;
       deviceName = "Unconnected";
     } else {
-      StrumMaster.connect()
-        .then(() => {
+      await StrumMaster.connect()
+        .then(async () => {
           deviceName = StrumMaster.getDeviceName()
             ? StrumMaster.getDeviceName()
             : StrumMaster.defaultDeviceName;
-          StrumMaster.send("CONNECTING").then(() => {
-            setMode();
-            connected = true;
-          });
+          await StrumMaster.send("CONNECTING");
+          await setMode();
+          connected = true;
         })
         .catch((error) => console.log(error));
     }
   };
-  const applyConfig = () => {
-    StrumMaster.send(modes.configuring.command).then(() => {
-      StrumMaster.send(JSON.stringify($currentConfig)).then(() => {
-        setMode();
-      });
-    });
+  const applyConfig = async () => {
+    await StrumMaster.send(modes.configuring.command);
+    await StrumMaster.send(JSON.stringify($currentConfig));
+    await setMode();
   };
 
   // Live play
   const livePlay = async (event) => {
     console.log("LIVE:" + event.detail.id.toString().padStart(2, "0"));
     if (connected) {
-      StrumMaster.send("LIVE:" + event.detail.id.toString().padStart(2, "0"));
+      await StrumMaster.send(
+        "LIVE:" + event.detail.id.toString().padStart(2, "0")
+      );
     }
   };
 
