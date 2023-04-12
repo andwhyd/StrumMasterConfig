@@ -49,7 +49,7 @@
 
 <div class="input_card" transition:fade={{ duration: 100 }}>
     <div>
-        <h4 class="card_header">Input {idx + 1}</h4>
+        <h1 class="card_header">Input {idx + 1}</h1>
     </div>
     <div>
         <select bind:value={selAction} on:change={update_config}>
@@ -60,7 +60,7 @@
             {/each}
         </select>
         {#each strings as string, j}
-            <div>
+            <div class="checkbox">
                 <label>
                     <input
                         type="checkbox"
@@ -84,7 +84,7 @@
 <style>
     .input_card {
         border-radius: 0.8rem;
-        padding: 1rem 2rem;
+        padding: 1rem 1rem;
         border: solid darkgoldenrod;
         margin: 0.5rem;
         text-align: left;
@@ -101,5 +101,14 @@
     .live_control {
         margin: 1rem 0rem 0.5rem;
         text-align: center;
+    }
+    select {
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: large;
+    }
+    .checkbox {
+        font-size: large;
+        padding: 0.5rem;
     }
 </style>
