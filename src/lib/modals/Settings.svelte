@@ -21,6 +21,7 @@
         if (selectMode != $selMode.id) {
             $selMode = modes[Object.keys(modes)[selectMode]];
         }
+        showSettings = false;
     };
 </script>
 
