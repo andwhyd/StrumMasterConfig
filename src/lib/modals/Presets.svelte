@@ -140,6 +140,7 @@
     }
     .presets {
         margin: 1rem;
+        margin-left: 0rem;
     }
     select {
         height: 35vh;
