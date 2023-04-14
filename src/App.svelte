@@ -16,28 +16,28 @@
     if (StrumMaster.device === null) {
       connected = false;
       deviceName = "Unconnected";
+      clearInterval(checkConnectionInt);
     }
   };
-  const checkConnectionInt = setInterval(checkConnection, 1000);
+  let checkConnectionInt = setInterval(checkConnection, 1000);
   StrumMaster.receive = (data) => {
     lastRecieved = data;
     console.log(data);
   };
-  const checkInterval = 100; //ms
-  const timeOut = 500; //ms
-  const waitForMessage = (message, totalTime) => {
-    if (lastRecieved === message) {
-      return true;
-    } else if (totalTime > timeOut) {
-      return false;
-    } else {
-      setTimeout(
-        waitForMessage,
-        checkInterval,
-        message,
-        (totalTime += checkInterval)
-      );
+  const waitInterval = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+  const waitForMessage = async (message, timeOut, checkInterval) => {
+    let totalTime = 0;
+    while (totalTime <= timeOut) {
+      if (lastRecieved === message) {
+        return true;
+      } else {
+        await waitInterval(checkInterval);
+        totalTime += checkInterval;
+      }
     }
+    return false;
   };
   $: $selMode, setMode();
   const setMode = async () => {
@@ -59,6 +59,7 @@
           await StrumMaster.send("CONNECTING");
           connected = true;
           await setMode();
+          checkConnectionInt = setInterval(checkConnection, 1000);
         })
         .catch((error) => console.log(error));
     }
@@ -67,6 +68,11 @@
     await StrumMaster.send(modes.configuring.command);
     await StrumMaster.send(JSON.stringify($currentConfig));
     await setMode();
+    if (await waitForMessage("CONFIGURED", 2000, 100)) {
+      alert("Config applied!");
+    } else {
+      alert("Config application timed out!");
+    }
   };
 
   // Live play
@@ -128,7 +134,7 @@
         <InputCard idx={j} on:livePlay={livePlay} />
       </div>
     {/each}
-  </div>  
+  </div>
 </main>
 
 <Settings bind:showSettings />
