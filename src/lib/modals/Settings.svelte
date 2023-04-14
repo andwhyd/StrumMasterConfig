@@ -33,7 +33,6 @@
                 <input type="range" min="1" max="12" bind:value={buttonNum} />
             </label>
         </div>
-        <hr />
         <div class="option">
             <label>
                 Select operating mode:
@@ -58,7 +57,16 @@
         width: 100%;
     }
     .option {
-        margin: 1rem 0rem;
+        padding: 1rem 2rem;
+        margin: 0rem -2rem;
+        border-bottom: 1px solid gray;
+    }
+    .body > .option:first-child {
+        margin-top: -2rem;
+    }
+    .body > .option:last-child {
+        margin-bottom: -2rem;
+        border-bottom: 0px solid gray;
     }
     input {
         width: 100%;
