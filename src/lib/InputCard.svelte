@@ -28,6 +28,10 @@
             break;
     }
 
+    // Keybinds
+    import Keybind from "./modals/Keybind.svelte";
+    let showKeybind = false;
+
     onMount(() => {
         write_config($currentConfig.buttonConfigs[idx]);
     });
@@ -97,10 +101,17 @@
             <button on:click={() => dispatch("livePlay", { id: idx })}>
                 Play
             </button>
-            <button class="kbd">{keybind}</button>
+            <button
+                class="kbd"
+                on:click={() => {
+                    showKeybind = true;
+                }}>{keybind}</button
+            >
         </div>
     {/if}
 </div>
+
+<Keybind bind:showKeybind bind:keybind />
 
 <style>
     .input_card {

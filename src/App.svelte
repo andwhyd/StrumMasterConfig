@@ -11,7 +11,6 @@
   const StrumMaster = new BluetoothTerminal();
   let connected = false;
   let deviceName = "Unconnected";
-  let lastRecieved = "";
   const checkConnection = () => {
     if (StrumMaster.device === null) {
       connected = false;
@@ -20,9 +19,36 @@
     }
   };
   let checkConnectionInt = setInterval(checkConnection, 1000);
+  let lastRecieved = "";
   StrumMaster.receive = (data) => {
     lastRecieved = data;
     console.log(data);
+  };
+  const waitForMessage = (
+    message,
+    timeout = 1000,
+    interval = 50,
+    successString = "Success",
+    failString = "Failed",
+    totalTime = 0
+  ) => {
+    if (totalTime > timeout) {
+      alert(failString);
+      return;
+    } else if (message !== lastRecieved) {
+      setTimeout(
+        waitForMessage,
+        interval,
+        message,
+        timeout,
+        interval,
+        successString,
+        failString,
+        totalTime + interval
+      );
+      return;
+    }
+    alert(successString);
   };
   $: $selMode, setMode();
   const setMode = async () => {
@@ -53,7 +79,13 @@
     await StrumMaster.send(modes.configuring.command);
     await StrumMaster.send(JSON.stringify($currentConfig));
     await setMode();
-    alert("Config applied!");
+    waitForMessage(
+      "CONFIGURED",
+      undefined,
+      undefined,
+      "Config applied!",
+      "Config failed to apply"
+    );
   };
 
   // Live play
@@ -116,6 +148,12 @@
       </div>
     {/each}
   </div>
+
+  <!-- <button
+    on:click={() => {
+      waitForMessage("Test");
+    }}
+  /> -->
 </main>
 
 <Settings bind:showSettings />
