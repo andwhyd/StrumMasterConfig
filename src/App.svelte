@@ -24,21 +24,6 @@
     lastRecieved = data;
     console.log(data);
   };
-  const waitInterval = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-  const waitForMessage = async (message, timeOut, checkInterval) => {
-    let totalTime = 0;
-    while (totalTime <= timeOut) {
-      if (lastRecieved === message) {
-        return true;
-      } else {
-        await waitInterval(checkInterval);
-        totalTime += checkInterval;
-      }
-    }
-    return false;
-  };
   $: $selMode, setMode();
   const setMode = async () => {
     if (connected) {
@@ -68,11 +53,7 @@
     await StrumMaster.send(modes.configuring.command);
     await StrumMaster.send(JSON.stringify($currentConfig));
     await setMode();
-    if (await waitForMessage("CONFIGURED", 2000, 100)) {
-      alert("Config applied!");
-    } else {
-      alert("Config application timed out!");
-    }
+    alert("Config applied!");
   };
 
   // Live play
