@@ -27,7 +27,7 @@
   const waitForMessage = (
     message,
     timeout = 1000,
-    interval = 50,
+    interval = 5,
     successString = "Success",
     failString = "Failed",
     totalTime = 0
