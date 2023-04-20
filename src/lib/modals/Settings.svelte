@@ -42,7 +42,7 @@
         <div class="option">
             <label>
                 Strumming Delay (ms): {strumDelay}
-                <input type="range" min="12" max="100" bind:value={strumDelay} />
+                <input type="range" min="0" max="100" bind:value={strumDelay} />
             </label>
         </div>
         <div class="option">
