@@ -1,4 +1,6 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
     import Modal from "./Modal.svelte";
     export let showSettings;
 
@@ -9,6 +11,9 @@
     const updateButtonNum = () => {
         buttonNum = $currentConfig.buttonNum;
     };
+
+    // Fire delay settings
+    let strumDelay = 12;
 
     // Mode setting
     import { modes } from "../../store";
@@ -21,6 +26,7 @@
         if (selectMode != $selMode.id) {
             $selMode = modes[Object.keys(modes)[selectMode]];
         }
+        dispatch("updateFireDelay", {fireDelay: strumDelay})
         showSettings = false;
     };
 </script>
@@ -31,6 +37,12 @@
             <label>
                 Number of inputs: {buttonNum}
                 <input type="range" min="1" max="12" bind:value={buttonNum} />
+            </label>
+        </div>
+        <div class="option">
+            <label>
+                Strumming Delay (ms): {strumDelay}
+                <input type="range" min="12" max="100" bind:value={strumDelay} />
             </label>
         </div>
         <div class="option">

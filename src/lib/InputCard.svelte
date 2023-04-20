@@ -63,7 +63,7 @@
     };
 
     const handleKeydown = (event) => {
-        if ($selMode == modes.live && event.key === keybind) {
+        if ($selMode == modes.keyboard && event.key === keybind) {
             dispatch("livePlay", { id: idx });
         }
     };
@@ -96,7 +96,7 @@
             {/each}
         </div>
     </div>
-    {#if $selMode == modes.live}
+    {#if $selMode == modes.keyboard}
         <div class="live_control" transition:slide>
             <button on:click={() => dispatch("livePlay", { id: idx })}>
                 Play

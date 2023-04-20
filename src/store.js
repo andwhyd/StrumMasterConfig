@@ -15,12 +15,12 @@ export const strings = [
 ];
 export const modes = {
     configuring: { id: 0, command: "MODE:00", hidden: true },
-    standard: { id: 1, command: "MODE:01", hidden: false },
+    controller: { id: 1, command: "MODE:01", hidden: false },
     serial: { id: 2, command: "MODE:02", hidden: false },
-    live: { id: 3, command: "MODE:03", hidden: false },
+    keyboard: { id: 3, command: "MODE:03", hidden: false },
     error: { id: 99, command: "MODE:99", hidden: true },
 };
-export const selMode = writable(modes.standard);
+export const selMode = writable(modes.controller);
 
 const updateButtonNum = (config, num) => {
     config.buttonNum = num;

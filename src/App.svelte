@@ -68,8 +68,8 @@
             ? StrumMaster.getDeviceName()
             : StrumMaster.defaultDeviceName;
           await StrumMaster.send("CONNECTING");
-          connected = true;
           await setMode();
+          connected = true;
           checkConnectionInt = setInterval(checkConnection, 1000);
         })
         .catch((error) => console.log(error));
@@ -86,6 +86,22 @@
       "Config applied!",
       "Config failed to apply"
     );
+  };
+  const updateFireDelay = async (event) => {
+    if (connected) {
+      await StrumMaster.send(modes.configuring.command);
+      await StrumMaster.send(
+        "FIREDELAY:" + event.detail.fireDelay.toString().padStart(3, "0")
+      );
+      await setMode();
+      waitForMessage(
+        "CONFIGURED",
+        undefined,
+        undefined,
+        "Settings applied!",
+        "Settings failed to apply"
+      );
+    }
   };
 
   // Live play
@@ -156,7 +172,7 @@
   /> -->
 </main>
 
-<Settings bind:showSettings />
+<Settings bind:showSettings on:updateFireDelay={updateFireDelay} />
 <Tutorial bind:showTutorial />
 <Presets bind:showPresets />
 

@@ -27,9 +27,9 @@
                 dispatch("presets");
             }}>Load/Manage Presets</button
         >
-        <button on:click={() => localStorage.clear()}
+        <!-- <button on:click={() => localStorage.clear()}
             >DEV: Clear Local Storage
-        </button>
+        </button> -->
     </div>
 </div>
 

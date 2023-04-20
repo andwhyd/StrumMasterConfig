@@ -37,14 +37,14 @@
     >
       Settings
     </button>
-    <button
+    <!-- <button
       class="tutorial"
       on:click={() => {
         dispatch("tutorial");
       }}
     >
       Tutorial
-    </button>
+    </button> -->
   </div>
   <div class="button_holder">
     <button
