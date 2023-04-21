@@ -12,8 +12,8 @@
         buttonNum = $currentConfig.buttonNum;
     };
 
-    // Fire delay settings
-    let strumDelay = 12;
+    // pick delay settings
+    let pickDelay = 12;
 
     // Mode setting
     import { modes } from "../../store";
@@ -26,7 +26,7 @@
         if (selectMode != $selMode.id) {
             $selMode = modes[Object.keys(modes)[selectMode]];
         }
-        dispatch("updateFireDelay", {fireDelay: strumDelay})
+        dispatch("updatePickDelay", {pickDelay: pickDelay})
         showSettings = false;
     };
 </script>
@@ -41,8 +41,8 @@
         </div>
         <div class="option">
             <label>
-                Strumming Delay (ms): {strumDelay}
-                <input type="range" min="0" max="100" bind:value={strumDelay} />
+                Picking Delay (ms): {pickDelay}
+                <input type="range" min="0" max="100" bind:value={pickDelay} />
             </label>
         </div>
         <div class="option">

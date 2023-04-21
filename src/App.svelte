@@ -87,11 +87,11 @@
       "Config failed to apply"
     );
   };
-  const updateFireDelay = async (event) => {
+  const updatePickDelay = async (event) => {
     if (connected) {
       await StrumMaster.send(modes.configuring.command);
       await StrumMaster.send(
-        "FIREDELAY:" + event.detail.fireDelay.toString().padStart(3, "0")
+        "PICKDELAY:" + event.detail.fireDelay.toString().padStart(2, "0")
       );
       await setMode();
       waitForMessage(
@@ -164,15 +164,9 @@
       </div>
     {/each}
   </div>
-
-  <!-- <button
-    on:click={() => {
-      waitForMessage("Test");
-    }}
-  /> -->
 </main>
 
-<Settings bind:showSettings on:updateFireDelay={updateFireDelay} />
+<Settings bind:showSettings on:updatePickDelay={updatePickDelay} />
 <Tutorial bind:showTutorial />
 <Presets bind:showPresets />
 
